@@ -12,7 +12,7 @@ window.addEventListener('DOMContentLoaded', function(){
             dataSet = target.dataset.popup;
       if (target.closest('.clubs-list') && (!clubListItems.style.display || clubListItems.style.display === 'none')) {
         clubListItems.style.display = 'block';
-      } else {
+      } else if (!target.closest('.clubs-list')){
         clubListItems.style.display = 'none';
       }
       if (dataSet) {
@@ -63,7 +63,7 @@ window.addEventListener('DOMContentLoaded', function(){
     const startSlide = (time) => {
       interval = setInterval(autoPlaySlide, time);
     };
-    startSlide(1500);
+    startSlide(3000);
   }
   slider();
 
