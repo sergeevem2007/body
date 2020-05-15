@@ -348,21 +348,25 @@
     <div class="gallery-bg">
         <div class="wrapper">
             <div class="gallery-slider">
-                <div class="slide">
+                <button id="arrow-left"><</button>
+                <div class="slide d-none active">
                     <img src="images/gallery/photo1.jpg" alt="">
                 </div>
-                <div class="slide">
+                <div class="slide d-none">
                     <img src="images/gallery/photo2.jpg" alt="">
                 </div>
-                <div class="slide">
+                <div class="slide d-none">
                     <img src="images/gallery/photo3.jpg" alt="">
                 </div>
-                <div class="slide">
+                <div class="slide d-none">
                     <img src="images/gallery/photo4.jpg" alt="">
                 </div>
-                <div class="slide">
+                <div class="slide d-none">
                     <img src="images/gallery/photo5.jpg" alt="">
                 </div>
+                <ul class="slide-dots">
+                </ul>
+                <button id="arrow-right">></button>
             </div>
         </div>
     </div>
@@ -370,7 +374,9 @@
 <section id="services">
     <div class="wrapper">
         <h2>услуги наших клубов</h2>
+        <button class="slider-prev"><</button>
         <div class="services-slider">
+            
             <div class="slide">
                 <img src="images/services-slider/akva.jpg" alt="Аква территория">
                 <h6>Аква территория</h6>
@@ -421,7 +427,10 @@
                 <h6>Йога</h6>
                 <p>Йога - идеальны не только физическая форма, но и эмоциональное состояние</p>
             </div>
+            
+
         </div>
+        <button class="slider-next">></button>
     </div>
 </section>
 <section id="banner">

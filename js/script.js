@@ -39,19 +39,19 @@ window.addEventListener('DOMContentLoaded', function(){
   toggleItem();
 
   // слайдер главной странциы
+  const prevSlide = (elem, index, strClass) => {
+    elem[index].classList.remove(strClass);
+  };
+  const nextSlide = (elem, index, strClass) => {
+    elem[index].classList.add(strClass);
+  };
+  
   const slider = () => {
     const slider = document.querySelector('.main-slider'), 
           slide = slider.querySelectorAll('.slide');
-              
     let currentSlide = 0,
         interval;
-    
-    const prevSlide = (elem, index, strClass) => {
-      elem[index].classList.remove(strClass);
-    };
-    const nextSlide = (elem, index, strClass) => {
-      elem[index].classList.add(strClass);
-    };
+  
     const autoPlaySlide = () => {
       prevSlide(slide, currentSlide, 'active');
       currentSlide++;
@@ -64,8 +64,48 @@ window.addEventListener('DOMContentLoaded', function(){
       interval = setInterval(autoPlaySlide, time);
     };
     startSlide(3000);
-  }
+  };
   slider();
+
+  const gallery = () => {
+    const slider = document.querySelector('.gallery-slider'), 
+          slide = slider.querySelectorAll('.slide'),
+          dots = document.querySelector('.slide-dots');
+    let currentSlide = 0;
+    for (let i = 0; i < slide.length; i++) {
+      let li = document.createElement('li');
+      li.classList.add('dot');
+      dots.append(li);
+    }
+    const dot = document.querySelectorAll('.dot');
+    dot[0].classList.add('dot-active');
+        
+    slider.addEventListener('click', (event) =>{
+      let target = event.target;
+      prevSlide(slide, currentSlide, 'active');
+      prevSlide(dot, currentSlide, 'dot-active');
+      if (target.matches('#arrow-right')) {
+        currentSlide++;
+      } else if (target.matches('#arrow-left')) {
+        currentSlide--;
+      } else if (target.matches('.dot')) {
+        dot.forEach((elem, index) =>{
+          if (elem === target) {
+            currentSlide = index;
+            console.log(index);
+          }
+        });
+      }
+      if (currentSlide >= slide.length) {
+        currentSlide = 0;
+      } else if (currentSlide < 0) {
+        currentSlide = slide.length - 1;
+      }
+      nextSlide(slide, currentSlide, 'active');
+      nextSlide(dot, currentSlide, 'dot-active');
+    });
+  };
+  gallery();
 
   class sliderCarusel{
     constructor({main, wrap, next, prev, position = 0, slidesToShow = 3, infinity = false}){
@@ -82,7 +122,6 @@ window.addEventListener('DOMContentLoaded', function(){
       }
     }
     init(){
-      console.log(this.slides)
       this.addClass();
       this.addStyle();
       if (this.prev && this.next){
@@ -138,7 +177,6 @@ window.addEventListener('DOMContentLoaded', function(){
         this.wrap.style.transform = `translateX(-${this.options.position * this.options.widthSlide}%)`;
       }
     }
-    
   }
   const carusel = new sliderCarusel( {
     main: '#services>.wrapper',
@@ -149,4 +187,6 @@ window.addEventListener('DOMContentLoaded', function(){
     slidesToShow : 3,
   });
   carusel.init();
+
+  
 })
