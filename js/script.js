@@ -92,7 +92,6 @@ window.addEventListener('DOMContentLoaded', function(){
         dot.forEach((elem, index) =>{
           if (elem === target) {
             currentSlide = index;
-            console.log(index);
           }
         });
       }
