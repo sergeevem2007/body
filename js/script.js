@@ -12,7 +12,7 @@ window.addEventListener('DOMContentLoaded', function(){
             dataSet = target.dataset.popup;
       if (target.closest('.clubs-list') && (!clubListItems.style.display || clubListItems.style.display === 'none')) {
         clubListItems.style.display = 'block';
-      } else if (!target.closest('.clubs-list')){
+      } else if (!target.closest('.clubs-list') || (target.closest('.clubs-list') && clubListItems.style.display === 'block')){
         clubListItems.style.display = 'none';
       }
       if (dataSet) {
