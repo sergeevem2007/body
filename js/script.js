@@ -55,14 +55,14 @@ window.addEventListener('DOMContentLoaded', function(){
       if (window.pageYOffset >= topMenu.clientHeight) {
         topMenu.style.position = 'fixed';
       } else {
-        topMenu.style.position = 'relative';
+        topMenu.style.position = '';
       }
     };
     if (screenWidth <= 767) {
       window.addEventListener('scroll', fixTopMenu);
     } else if (screenWidth > 767){
       window.removeEventListener('scroll', fixTopMenu);
-      topMenu.style.position = 'relative';
+      topMenu.style.position = '';
     }
     window.addEventListener('resize', () =>{
       screenWidth = screen.width;
@@ -72,7 +72,7 @@ window.addEventListener('DOMContentLoaded', function(){
       } else if (screenWidth > 767) {
         menuButton.style.display = 'none';
         window.removeEventListener('scroll', fixTopMenu);
-        topMenu.style.position = 'relative';
+        topMenu.style.position = '';
       } 
     });
     
@@ -227,5 +227,55 @@ window.addEventListener('DOMContentLoaded', function(){
   });
   carusel.init();
 
-  
+  // калькулятор
+  const calc = () => {
+    const cardOrder = document.querySelector('#card_order'),
+          cardType = cardOrder.querySelectorAll('.time>input'),
+          club = cardOrder.querySelectorAll('.club>input'),
+          promo = cardOrder.querySelector('.input-text>#promo'),
+          priceTotal = cardOrder.querySelector('#price-total');
+    const price = {
+      card_leto_mozaika : [1999, 9900, 13900, 19900],
+      card_leto_schelkovo : [2999, 14990, 21990, 24990]
+    }
+    
+    const countSum = () => {
+     
+      for (let j = 0; j < club.length; j++){
+            if (club[j].checked === true) {
+            let currentClub = club[j].id;
+            console.log(currentClub)
+            for (currentClub in price) {
+              console.log(price[currentClub][0])
+            }
+          }
+        }
+    //   for (let j = 0; j < club.length; j++){
+    //     if (club[j].checked === true) {
+    //       let currentClub = club[j].id;
+    //       if (currentClub === 'card_leto_mozaika') {
+    //         for (let i = 0; i < cardType.length; i++){
+    //           if (cardType[i].checked === true){
+    //             let currentTime = cardType[i].value;
+    //             priceTotal.textContent = price.card_leto_mozaika[currentTime];
+    //           }
+    //         }
+    //       } else if (currentClub === 'card_leto_schelkovo'){
+    //         for (let i = 0; i < cardType.length; i++){
+    //           if (cardType[i].checked === true){
+    //             let currentTime = cardType[i].value;
+    //             priceTotal.textContent = price.card_leto_schelkovo[currentTime];
+    //           }
+    //         }
+    //       }
+    //     }
+    //   }      
+    //  }
+    
+  }
+  countSum();
+    cardOrder.addEventListener('click', countSum);
+  console.log(1)
+}
+  calc();
 })
