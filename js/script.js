@@ -235,47 +235,26 @@ window.addEventListener('DOMContentLoaded', function(){
           promo = cardOrder.querySelector('.input-text>#promo'),
           priceTotal = cardOrder.querySelector('#price-total');
     const price = {
-      card_leto_mozaika : [1999, 9900, 13900, 19900],
-      card_leto_schelkovo : [2999, 14990, 21990, 24990]
+      1: [1999, 2999],
+      6: [9900, 14990],
+      9: [13900, 21990],
+      12: [19900, 24990]
     }
     
     const countSum = () => {
-     
-      for (let j = 0; j < club.length; j++){
+      for (let i = 0; i < cardType.length; i++){
+        if (cardType[i].checked === true){
+          let currentCard = cardType[i].value;
+          for (let j = 0; j < club.length; j++){
             if (club[j].checked === true) {
-            let currentClub = club[j].id;
-            console.log(currentClub)
-            for (currentClub in price) {
-              console.log(price[currentClub][0])
+              let sum = price[currentCard][j];
+              priceTotal.textContent = sum;
             }
           }
         }
-    //   for (let j = 0; j < club.length; j++){
-    //     if (club[j].checked === true) {
-    //       let currentClub = club[j].id;
-    //       if (currentClub === 'card_leto_mozaika') {
-    //         for (let i = 0; i < cardType.length; i++){
-    //           if (cardType[i].checked === true){
-    //             let currentTime = cardType[i].value;
-    //             priceTotal.textContent = price.card_leto_mozaika[currentTime];
-    //           }
-    //         }
-    //       } else if (currentClub === 'card_leto_schelkovo'){
-    //         for (let i = 0; i < cardType.length; i++){
-    //           if (cardType[i].checked === true){
-    //             let currentTime = cardType[i].value;
-    //             priceTotal.textContent = price.card_leto_schelkovo[currentTime];
-    //           }
-    //         }
-    //       }
-    //     }
-    //   }      
-    //  }
-    
-  }
-  countSum();
+      }
+    }
     cardOrder.addEventListener('click', countSum);
-  console.log(1)
-}
+  }
   calc();
 })
