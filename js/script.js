@@ -261,4 +261,17 @@ window.addEventListener('DOMContentLoaded', function(){
     cardOrder.addEventListener('change', countSum);  
   }
   calc();
+  const arrowUp = () => {
+    const toTop = document.querySelector('#totop'),
+          banner = document.querySelector("#banner");
+    toTop.style.display = 'none';
+    window.addEventListener('scroll', ()=>{
+      if (window.pageYOffset >= banner.clientHeight) {
+        toTop.style.display = '';
+      } else if (window.pageYOffset < banner.clientHeight){
+        toTop.style.display = 'none';
+      }
+    })
+  }
+  arrowUp();
 })
