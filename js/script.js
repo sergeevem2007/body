@@ -48,7 +48,6 @@ window.addEventListener('DOMContentLoaded', function(){
   // поведение меню
   const toggleMenu = () => {
     const menuButton = document.querySelector('.menu-button'),
-          buttonBurgerMenu = menuButton.querySelector('img'),
           topMenu = document.querySelector('.top-menu');
     let screenWidth = screen.width;
     const fixTopMenu = () =>{
@@ -248,13 +247,18 @@ window.addEventListener('DOMContentLoaded', function(){
           for (let j = 0; j < club.length; j++){
             if (club[j].checked === true) {
               let sum = price[currentCard][j];
-              priceTotal.textContent = sum;
+              if (promo.value === 'ТЕЛО2019'){
+                priceTotal.textContent = Math.ceil(sum * 0.7);
+              } else {
+                priceTotal.textContent = sum;
+              }
             }
           }
         }
       }
     }
-    cardOrder.addEventListener('click', countSum);
+    countSum();
+    cardOrder.addEventListener('change', countSum);  
   }
   calc();
 })
