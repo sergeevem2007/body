@@ -261,6 +261,8 @@ window.addEventListener('DOMContentLoaded', function(){
     cardOrder.addEventListener('change', countSum);  
   }
   calc();
+
+  // появление стрелки вверх
   const arrowUp = () => {
     const toTop = document.querySelector('#totop'),
           banner = document.querySelector("#banner");
