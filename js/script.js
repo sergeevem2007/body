@@ -6,7 +6,8 @@ window.addEventListener('DOMContentLoaded', function(){
     const clubList = document.querySelector('.clubs-list'),
           clubListItems = clubList.querySelector('ul'),
           gift = document.querySelector('#gift'),
-          fixedGift = document.querySelector('.fixed-gift');
+          fixedGift = document.querySelector('.fixed-gift'),
+          popUpMenu = document.querySelector('.popup-menu');
     document.addEventListener('click', (event)=>{
       const target = event.target,
             dataSet = target.dataset.popup;
@@ -25,6 +26,12 @@ window.addEventListener('DOMContentLoaded', function(){
         gift.style.display = 'block';
         fixedGift.style.display = 'none';
       }
+      if (target.closest('.menu-button>img')){
+        popUpMenu.style.display = 'flex';
+      }
+      if (target.closest('.close-menu-btn') || target.closest('.scroll')){
+        popUpMenu.style.display = 'none';
+      }
       try {
         if (!target.closest('.form-content') ) {
           target.closest('.popup').style.display = 'none';
@@ -38,6 +45,39 @@ window.addEventListener('DOMContentLoaded', function(){
   };
   toggleItem();
 
+  // поведение меню
+  const toggleMenu = () => {
+    const menuButton = document.querySelector('.menu-button'),
+          buttonBurgerMenu = menuButton.querySelector('img'),
+          topMenu = document.querySelector('.top-menu');
+    let screenWidth = screen.width;
+    const fixTopMenu = () =>{
+      if (window.pageYOffset >= topMenu.clientHeight) {
+        topMenu.style.position = 'fixed';
+      } else {
+        topMenu.style.position = 'relative';
+      }
+    };
+    if (screenWidth <= 767) {
+      window.addEventListener('scroll', fixTopMenu);
+    } else if (screenWidth > 767){
+      window.removeEventListener('scroll', fixTopMenu);
+      topMenu.style.position = 'relative';
+    }
+    window.addEventListener('resize', () =>{
+      screenWidth = screen.width;
+      if (screenWidth <= 767) {
+        menuButton.style.display = 'block';
+        window.addEventListener('scroll', fixTopMenu);
+      } else if (screenWidth > 767) {
+        menuButton.style.display = 'none';
+        window.removeEventListener('scroll', fixTopMenu);
+        topMenu.style.position = 'relative';
+      } 
+    });
+    
+  };
+  toggleMenu();
   // слайдер главной странциы
   const prevSlide = (elem, index, strClass) => {
     elem[index].classList.remove(strClass);
