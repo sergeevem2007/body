@@ -265,12 +265,12 @@ window.addEventListener('DOMContentLoaded', function(){
   // появление стрелки вверх
   const arrowUp = () => {
     const toTop = document.querySelector('#totop'),
-          banner = document.querySelector("#banner");
+          header = document.querySelector("header");
     toTop.style.display = 'none';
     window.addEventListener('scroll', ()=>{
-      if (window.pageYOffset >= banner.clientHeight) {
+      if (window.pageYOffset >= header.clientHeight) {
         toTop.style.display = '';
-      } else if (window.pageYOffset < banner.clientHeight){
+      } else if (window.pageYOffset < header.clientHeight){
         toTop.style.display = 'none';
       }
     })
