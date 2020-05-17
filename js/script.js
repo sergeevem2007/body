@@ -16,7 +16,7 @@ window.addEventListener('DOMContentLoaded', function(){
       } else if (!target.closest('.clubs-list') || (target.matches('p') && clubListItems.style.display === 'block')){
         clubListItems.style.display = 'none';
       }
-      if (dataSet) {
+      if (dataSet && !target.matches('.footer-btn')) {
         document.querySelector(dataSet).style.display = 'block';
       }
       if (target.closest('.close-form')) {
@@ -258,7 +258,7 @@ window.addEventListener('DOMContentLoaded', function(){
       }
     }
     countSum();
-    cardOrder.addEventListener('change', countSum);  
+    cardOrder.addEventListener('click', countSum);  
   }
   calc();
 
@@ -276,4 +276,61 @@ window.addEventListener('DOMContentLoaded', function(){
     })
   }
   arrowUp();
+
+  //отправка формы
+  const sendForm = () => {
+    const errorMessage = 'Что-то пошло не так...',
+          loadMessage = 'Загрузка...',
+          successMessage = `Ваша заявка отправлена.<br>Мы свяжемся с вами в ближайшее время.`,
+          form = document.querySelectorAll('form'),
+          thanks = document.querySelector('#thanks'),
+          statusMessage = thanks.querySelector('p');
+    
+    // console.log(form)
+    for (let element of form) {
+      console.log(element)
+      element.addEventListener('submit', (event) =>{
+        event.preventDefault();
+        thanks.style.display = 'block';
+        statusMessage.innerHTML = loadMessage;
+        const formData = new FormData(element);
+        let body = {};
+        for (let value of formData.entries()) {
+          body[value[0]] = value[1];
+        }
+        postData(body)
+          .then((response) => {
+            if (response.status !== 200) {
+              throw new Error('status network not 200');
+            }
+          })
+          .then( () => {
+            statusMessage.innerHTML = successMessage;
+            clearInput(element);
+            setTimeout( () => {
+              thanks.style.display = '';
+            }, 5000);
+          })
+          .catch((error) => {
+            statusMessage.innerHTML = errorMessage;
+            console.error(error)
+          });
+      });
+    }; 
+    const postData = (body) => {
+      return fetch('server.php', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'aplication/json'
+        },
+        body:JSON.stringify(body)
+      });
+    };
+    const clearInput = (target) => {
+      for (let i = 0; i < target.length; i++) {
+        target[i].value = '';
+      }
+    };
+  };
+  sendForm();
 })
