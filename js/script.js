@@ -234,10 +234,10 @@ window.addEventListener('DOMContentLoaded', function(){
           promo = cardOrder.querySelector('.input-text>#promo'),
           priceTotal = cardOrder.querySelector('#price-total');
     const price = {
-      1: [1999, 2999],
-      6: [9900, 14990],
-      9: [13900, 21990],
-      12: [19900, 24990]
+        1: [1999, 2999],
+        6: [9900, 14990],
+        9: [13900, 21990],
+        12: [19900, 24990]
     }
     
     const countSum = () => {
@@ -257,7 +257,6 @@ window.addEventListener('DOMContentLoaded', function(){
         }
       }
     }
-    countSum();
     cardOrder.addEventListener('click', countSum);  
   }
   calc();
@@ -277,6 +276,166 @@ window.addEventListener('DOMContentLoaded', function(){
   }
   arrowUp();
 
+
+  // класс валидатор 
+  class Validator {
+    constructor({element, pattern = {}, method}){
+      this.form = element;
+      this.pattern = pattern;
+      this.method = method;
+      this.elementsForm = [...this.form.elements].filter(item => {
+        return  item.tagName.toLowerCase() !== 'button' && 
+        item.type !== 'button';
+      });
+      this.error = new Set();
+
+    }
+    init(){
+      this.applyStyle();
+      this.setPattern();
+      this.elementsForm.forEach(elem => elem.addEventListener('change', this.checkIt.bind(this)));
+      const button = this.form.querySelector('button');
+      button.addEventListener('click', (e) =>{
+        this.elementsForm.forEach(elem => this.checkIt({target: elem}));
+        if (this.error.size){
+          e.preventDefault()
+        }
+      });
+    }
+    isValid(elem){
+      const validatorMethod = {
+        notEmpty(elem) {
+          if (elem.value.trim() === ''){
+            return false;
+          }
+          return true;
+        },
+        checked(elem) {
+          if (!elem.checked){
+            return false;
+          }
+          return true;
+        },
+        pattern(elem, pattern) {
+          return pattern.test(elem.value);
+        }
+      };
+      
+      if (this.method){
+        const method = this.method[elem.name];
+        if (method) {
+          return method.every( item => validatorMethod[item[0]](elem, this.pattern[item[1]]))
+        }
+      } else {
+        console.warn('Необходимо передать id полей ввода и методы проверки этих полей');
+      }
+      return true;
+    }
+    checkIt(event){
+      const target = event.target;
+      if (this.isValid(target)){
+        this.showSuccsess(target);
+        this.error.delete(target);
+      } else {
+        this.showError(target);
+        this.error.add(target);
+      }
+    }
+    showError(elem){
+      elem.classList.remove('succsess');
+      elem.classList.add('error');
+      if (elem.nextElementSibling && elem.nextElementSibling.classList.contains('validator-error')){
+        return
+      }
+      // const errorDiv = document.createElement('div');
+      // errorDiv.textContent = 'Ошибка в этом поле';
+      // errorDiv.classList.add('validator-error');
+      // elem.insertAdjacentElement('afterend', errorDiv);
+    }
+    showSuccsess(elem){
+      elem.classList.remove('error');
+      elem.classList.add('succsess');
+      if (elem.nextElementSibling && elem.nextElementSibling.classList.contains('validator-error')){
+        elem.nextElementSibling.remove();
+      }
+    }
+    applyStyle(){
+      const style = document.createElement('style');
+      style.textContent = `
+        input.succsess {
+          border: 2px solid green !important;
+        }
+        input.error {
+          border: 2px solid red !important;
+        }
+        .validator-error {
+          font-size: 12px;
+          font-family: sans-serif;
+          color: red;
+        }
+      `;
+      document.head.appendChild(style);
+    }
+    setPattern(){
+      if (!this.pattern.phone){
+        this.pattern.phone = /^\+?[78]([-()]*\d){10}$/;
+      }
+      if (!this.pattern.email){
+        this.pattern.email = /^\w+@\w+\.\w{2,}$/;
+      }
+    }
+  }
+
+  // init validator 
+  const form = document.querySelectorAll('form');
+	let formArray = [];
+	for (let i = 0; i < form.length; i++) {
+		const valid = new Validator({
+    element: form[i],
+    pattern: {
+			user_name: /^[а-яА-Я\s]*$/
+		},
+    method: {
+      'name': [
+        ['notEmpty'],
+        ['pattern' , 'user_name']
+      ],
+			'phone': [
+        ['notEmpty'],
+        ['pattern' , 'phone']
+			],
+      'personal-data>iput': [
+        ['checked']
+      ]
+    }
+	});
+	formArray.push(valid);
+	formArray[i].init();
+  };
+  
+  // проверка выбора клуба
+  const chooseClub = () => {
+    const button = document.querySelector('.footer-btn'),
+          chooseClub = document.querySelector('.choose-club'),
+          errorMessage = chooseClub.querySelector('h5'),
+          clubs = chooseClub.querySelectorAll('.club>input');
+    button.addEventListener('click', ()=>{
+      for (let i = 0; i < clubs.length; i++){
+        if (clubs[i].checked){
+          errorMessage.textContent = 'Выбрать клуб';
+          errorMessage.style.color = '';
+          return
+        } else {
+          errorMessage.textContent = 'Необходимо выбрать клуб';
+          errorMessage.style.color = 'red';
+        }
+      }
+    })
+    console.log(clubs)
+  }
+  chooseClub();
+
+  
   //отправка формы
   const sendForm = () => {
     const errorMessage = 'Что-то пошло не так...',
@@ -288,7 +447,6 @@ window.addEventListener('DOMContentLoaded', function(){
     
     // console.log(form)
     for (let element of form) {
-      console.log(element)
       element.addEventListener('submit', (event) =>{
         event.preventDefault();
         thanks.style.display = 'block';
@@ -306,7 +464,7 @@ window.addEventListener('DOMContentLoaded', function(){
           })
           .then( () => {
             statusMessage.innerHTML = successMessage;
-            clearInput(element);
+            // clearInput(element);
             setTimeout( () => {
               thanks.style.display = '';
             }, 5000);
