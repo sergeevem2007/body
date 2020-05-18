@@ -21,7 +21,6 @@ class Validator {
       }
       this.elementsForm.forEach(elem => this.checkIt({target: elem}));
       if (this.error.size){
-        alert('Необходимо подтвердить согласие на обработку данных, заполнить все поля ввода и если поле ввода подсвечено красным, исправить данные')
         e.preventDefault()
       }
     });
