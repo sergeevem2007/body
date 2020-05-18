@@ -46,6 +46,16 @@ const sendForm = () => {
   };
   const clearInput = (target) => {
     target.reset();
+    const popupForm = document.querySelectorAll('.popup');
+    for (let i = 0; i < popupForm.length; i++){
+      console.log(popupForm[i].id)
+      if (popupForm[i].id === 'thanks') {
+        console.log(popupForm[i])
+        popupForm[i].style.display = 'block';
+      } else {
+        popupForm[i].style.display = 'none';
+      }
+    }
   };
 };
 export default sendForm;

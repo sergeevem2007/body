@@ -7,7 +7,7 @@ const replaceForm = () => {
       });
     } else if (allInput[i].name === 'phone') {
       allInput[i].addEventListener('input', ()=>{
-        allInput[i].value = allInput[i].value.replace(/[^\d\s\(\)\-]/g, '');
+        allInput[i].value = allInput[i].value.replace(/[^\d\s\(\)\-\+]/g, '');
       });
     }
   }
