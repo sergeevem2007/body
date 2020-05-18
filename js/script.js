@@ -296,11 +296,34 @@ window.addEventListener('DOMContentLoaded', function(){
       this.elementsForm.forEach(elem => elem.addEventListener('change', this.checkIt.bind(this)));
       const button = this.form.querySelector('button');
       button.addEventListener('click', (e) =>{
+        if (e.target.matches('.footer-btn')){
+          this.chooseClub(e);
+        }
         this.elementsForm.forEach(elem => this.checkIt({target: elem}));
         if (this.error.size){
+          alert('Необходимо подтвердить согласие на обработку данных, заполнить все поля ввода и если поле ввода подсвечено красным, исправить данные')
           e.preventDefault()
         }
       });
+    }
+    chooseClub(event){
+      const target = event.target,
+            errorMessage = document.querySelector('.choose-club>h5'),
+            clubs = document.querySelectorAll('.choose-club>.club>input');
+        for (let i = 0; i < clubs.length; i++){
+          if (clubs[i].checked){
+            this.showSuccsess(target);
+            this.error.delete(target);
+            errorMessage.textContent = 'Выбрать клуб';
+            errorMessage.style.color = '';
+            return
+          } else {
+            this.showError(target);
+            this.error.add(target);
+            errorMessage.textContent = 'Необходимо выбрать клуб';
+            errorMessage.style.color = 'red';
+          }
+      }
     }
     isValid(elem){
       const validatorMethod = {
@@ -347,10 +370,6 @@ window.addEventListener('DOMContentLoaded', function(){
       if (elem.nextElementSibling && elem.nextElementSibling.classList.contains('validator-error')){
         return
       }
-      // const errorDiv = document.createElement('div');
-      // errorDiv.textContent = 'Ошибка в этом поле';
-      // errorDiv.classList.add('validator-error');
-      // elem.insertAdjacentElement('afterend', errorDiv);
     }
     showSuccsess(elem){
       elem.classList.remove('error');
@@ -367,6 +386,7 @@ window.addEventListener('DOMContentLoaded', function(){
         }
         input.error {
           border: 2px solid red !important;
+          color: red;
         }
         .validator-error {
           font-size: 12px;
@@ -404,7 +424,7 @@ window.addEventListener('DOMContentLoaded', function(){
         ['notEmpty'],
         ['pattern' , 'phone']
 			],
-      'personal-data>iput': [
+      'personal-data': [
         ['checked']
       ]
     }
@@ -413,27 +433,6 @@ window.addEventListener('DOMContentLoaded', function(){
 	formArray[i].init();
   };
   
-  // проверка выбора клуба
-  const chooseClub = () => {
-    const button = document.querySelector('.footer-btn'),
-          chooseClub = document.querySelector('.choose-club'),
-          errorMessage = chooseClub.querySelector('h5'),
-          clubs = chooseClub.querySelectorAll('.club>input');
-    button.addEventListener('click', ()=>{
-      for (let i = 0; i < clubs.length; i++){
-        if (clubs[i].checked){
-          errorMessage.textContent = 'Выбрать клуб';
-          errorMessage.style.color = '';
-          return
-        } else {
-          errorMessage.textContent = 'Необходимо выбрать клуб';
-          errorMessage.style.color = 'red';
-        }
-      }
-    })
-    console.log(clubs)
-  }
-  chooseClub();
 
   
   //отправка формы
@@ -445,7 +444,6 @@ window.addEventListener('DOMContentLoaded', function(){
           thanks = document.querySelector('#thanks'),
           statusMessage = thanks.querySelector('p');
     
-    // console.log(form)
     for (let element of form) {
       element.addEventListener('submit', (event) =>{
         event.preventDefault();
