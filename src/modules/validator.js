@@ -86,6 +86,16 @@ class Validator {
   showError(elem){
     elem.classList.remove('succsess');
     elem.classList.add('error');
+    if (elem.type === 'checkbox' && elem.classList.contains('error')) {
+      const style = document.createElement('style');
+      style.textContent = `
+        p.personal-data label{
+          color: red !important;
+        }
+      }
+      `;
+      document.head.appendChild(style);
+    }
     if (elem.nextElementSibling && elem.nextElementSibling.classList.contains('validator-error')){
       return
     }
@@ -93,6 +103,16 @@ class Validator {
   showSuccsess(elem){
     elem.classList.remove('error');
     elem.classList.add('succsess');
+    if (elem.type === 'checkbox' && elem.classList.contains('succsess')) {
+      const style = document.createElement('style');
+      style.textContent = `
+        p.personal-data label{
+          color: #fff !important;
+        }
+      }
+      `;
+      document.head.appendChild(style);
+    }
     if (elem.nextElementSibling && elem.nextElementSibling.classList.contains('validator-error')){
       elem.nextElementSibling.remove();
     }
@@ -105,11 +125,6 @@ class Validator {
       }
       input.error {
         border: 2px solid red !important;
-        color: red;
-      }
-      .validator-error {
-        font-size: 12px;
-        font-family: sans-serif;
         color: red;
       }
     `;
